@@ -2,22 +2,18 @@
 /*fetch data*/
 
 const fetchData = (function(){
-    const submitBtn = document.querySelector("input[type='submit']");
-
-    submitBtn.addEventListener('click', (event)=>{
-        event.preventDefault();
-        createObject();
-    })
+    createObject();
 })
 
 //create todo object
 class Todo{};
 
 function createObject(){
-    const inputElements = document.querySelectorAll("input:not(input[type='submit'])");
+    const inputElements = document.querySelectorAll("input:not(input[type='submit']), submit");
     const newProject = new Todo();
     inputElements.forEach((node)=>{
         const key = node.name;
+        console.log(node);
         newProject.key = node.value;
     })
 }
@@ -98,3 +94,6 @@ function CompletedTasks(){
 function exceedDueDate(){
     //
 }
+
+
+export{fetchData}

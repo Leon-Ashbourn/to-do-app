@@ -6,9 +6,31 @@
     <title>To do</title>
 </head>
 <body>
-    <div>Hello! Odinities</div>
     <form>
-        <input type="text" name="name" id="name">
+        <div>
+            <label for="project-title">Title</label>
+            <input type="text" id="project-title" name="title" placeholder="enter your project name..">
+            <label for="project-description"></label>
+            <input type="text" id="project-description" name="description" placeholder="brief info on the project..">
+        </div>
+        <div>
+            <label for="project-category">Category</label>
+            <select id="project-category" name="category">
+                <option value="High priority and urgent">High Priority/Urgent</option>
+                <option value="High priority and not urgent">High Priority/Not Urgent</option>
+                <option value="Low priority and Urgent">Low Priority/Urgent</option>
+                <option value="Low priority and not Urgent">Low Priority/Not Urgent</option>
+            </select>
+            <label for="project-priority">priority</label>
+            <input type="number" id="project-priority" name="priority">
+            <label for="due-date">Last Date</label>
+            <input type="date" id="due-date" name="date">
+        </div>
+        <div>
+            <label for="project-side-note"></label>
+            <input type="text" id="project-side-note" name="note" placeholder="notes..">
+        </div>
+        <div id="button"><input type="submit" value="Submit"></div>
     </form>
 </body>
 </html>

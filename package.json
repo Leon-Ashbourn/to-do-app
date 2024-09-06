@@ -1,7 +1,7 @@
 {
   "name": "to-do-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "taks to remember",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
     "build": "webpack serve --config webpack.prod.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Leon Ashbourne",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^7.1.2",
