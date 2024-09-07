@@ -11,7 +11,7 @@ module.exports = merge(commonConfig, {
         rules: [
             {
                 test: /\.css$/i,
-                use: ["syle-loader", "css-loader"]
+                use: ["style-loader", "css-loader"]
             }
         ]
     }

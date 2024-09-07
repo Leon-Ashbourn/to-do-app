@@ -6,31 +6,46 @@
     <title>To do</title>
 </head>
 <body>
-    <form>
-        <div>
-            <label for="project-title">Title</label>
-            <input type="text" id="project-title" name="title" placeholder="enter your project name..">
-            <label for="project-description"></label>
-            <input type="text" id="project-description" name="description" placeholder="brief info on the project..">
+    <div class="task-container">
+        <div class="all-fields">
+            <div class="intro">Enter your todo..</div>
+            <div class="navigation-bar">
+                <ul>
+                    <li role="navigate">Todo</li>
+                </ul>
+            </div>
+            <form id="task-field">
+                <div>
+                    <label for="task-title"></label>
+                    <input type="text" id="task-title" name="title" placeholder="Title: Learn webpack" required/ >
+                    <label for="task-description"></label>
+                    <textarea name="description" id="task-description" placeholder="Description: eg:start learning webpack lesson. "></textarea>
+                </div>
+                <div>
+                    <div>
+                        <p id="modify-para">Priority: </p>
+
+                        <label for="low"></label>
+                        <input type="button" id="low" name="priority" value="Low">
+                        <label for="medium"></label>
+                        <input type="button" id="medium" name="priority" value="Medium">
+                        <label for="high"></label>
+                        <input type="button" id="high" name="priority" value="High">
+                    </div>
+                    <div>
+                        <label for="due-date">Due date:</label>
+                        <input type="date" id="due-date" placeholder="Due date"  name="Due date">
+                    </div>
+                </div>
+                <div id="button"><input type="submit" value="Add Todo"></div>
+            </form>
+            <form id="note-field">
+                <div>
+                    <label for="side-note"></label>
+                    <textarea name="note" id="side-note" field_id="note-field" onfocus="placeholder:''">Keep a note of what you want do..</textarea>
+                </div>
+            </form>
         </div>
-        <div>
-            <label for="project-category">Category</label>
-            <select id="project-category" name="category">
-                <option value="High priority and urgent">High Priority/Urgent</option>
-                <option value="High priority and not urgent">High Priority/Not Urgent</option>
-                <option value="Low priority and Urgent">Low Priority/Urgent</option>
-                <option value="Low priority and not Urgent">Low Priority/Not Urgent</option>
-            </select>
-            <label for="project-priority">priority</label>
-            <input type="number" id="project-priority" name="priority">
-            <label for="due-date">Last Date</label>
-            <input type="date" id="due-date" name="date">
-        </div>
-        <div>
-            <label for="project-side-note"></label>
-            <input type="text" id="project-side-note" name="note" placeholder="notes..">
-        </div>
-        <div id="button"><input type="submit" value="Submit"></div>
-    </form>
+    </div>
 </body>
 </html>

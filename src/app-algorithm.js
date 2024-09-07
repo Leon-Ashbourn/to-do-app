@@ -9,13 +9,13 @@ const fetchData = (function(){
 class Todo{};
 
 function createObject(){
-    const inputElements = document.querySelectorAll("input:not(input[type='submit']), submit");
+    const inputElements = document.querySelectorAll("input:not(input[type='submit'], input[type='button']) textarea, input[data-check='checked']");
     const newProject = new Todo();
     inputElements.forEach((node)=>{
         const key = node.name;
-        console.log(node);
-        newProject.key = node.value;
+        newProject[key] = node.value;
     })
+    AddObjectToArray.addToArray(newProject);
 }
 
 //add object to the library
@@ -44,7 +44,6 @@ class AddObjectToArray {
 //add eac object to the local storage
 
 function addToLocalStorage(key, value){
-    value.date = value.date.toString();
     value = JSON.stringify(value);
     localStorage.setItem(key, value);
 }
