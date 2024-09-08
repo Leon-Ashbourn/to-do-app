@@ -6,9 +6,22 @@
     <title>To do</title>
 </head>
 <body>
-    <header></header>
+    <header>Your Todo app...</header>
     <div class="container">
-        <nav></nav>
+        <nav>
+            <ul id="daily-tasks">
+                <li role="navigate">Inbox</li>
+                <li role="navigate">Tomorrow</li>
+                <li role="navigate">Upcoming</li>
+            </ul>
+            <ul>
+                <li role="navigate">New Projects</li>
+            </ul>
+            <div id="button">
+                <img src="./icons/add.png" alt="add" class="icon">
+                <button id="project">New Project</button>
+            </div>
+        </nav>
         <div id="content"></div>
     </div>
     <div class="task-container">
@@ -45,10 +58,10 @@
                 <div id="button"><input type="submit" value="Add Todo"></div>
             </form>
             <form id="note-field">
-                <div>
+                <!-- <div>
                     <label for="side-note"></label>
                     <textarea name="note" id="side-note" field_id="note-field" onfocus="placeholder:''">Keep a note of what you want do..</textarea>
-                </div>
+                </div> -->
             </form>
         </div>
     </div>

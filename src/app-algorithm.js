@@ -8,16 +8,25 @@ const fetchData = (function(){
 //create todo object
 
 class Todo{}
+const iterator= (function(){
+    const getTodo = (target)=>{
+        const newTodo = new Todo(); //create todo
+        target.forEach((node)=>{
+            const key = node.name;
+            if(key) newTodo[key] = node.value;
+        }) //fill up with data
+        return newTodo;
+    }
+        
+    return {getTodo};
+})()
 
 function createObject(){
     const inputElements = document.querySelectorAll("input:not(input[type='button']), textarea:not(textarea[id='side-note']), input[checked='true']");
-    const newProject = new Todo();  
-    inputElements.forEach((node)=>{
-        const key = node.name;
-        if(key) newProject[key] = node.value;
-    })
+    const newProject = iterator.getTodo(inputElements);
     AddObjectToArray.addToArray(newProject);
 }
+
 
 //add object to the library
 
@@ -44,6 +53,7 @@ class AddObjectToArray {
 
     static updateArray(key, value){
         AddObjectToArray.#object[key] = value;
+
     }
     static getData(index){
         return this.#object[index];
@@ -62,6 +72,7 @@ function addToLocalStorage(key, value){
     value.index = AddObjectToArray.getKey();
     value = JSON.stringify(value);
     localStorage.setItem(key, value);
+    console.log("here");
 }
 
 function checkStorageForProject(key, value){
@@ -90,18 +101,12 @@ const editTodoList = (function(){
 //update local storage in case the user edited the list
 
 function updateLocalStorage(targetElement){
-    const dataId = targetElement["data-Id"];
-    const key = dataId;
-    key = Number(dataId);
-    if(dataId && !Number(dataId)) key = dataId;   
+    const dataId = targetElement["data-Key"];
+    let key = Number(dataId);
+    if(dataId && !key) key = dataId;   
 
-    const inputValue = document.querySelectorAll(`input[id='${targetElement}']:not(input[type="submit"]), input[id='${targetElement}'].${parentNode} textarea, input[id='#${targetElement}'].${parentNode} input[type='button'][checked='true'] `);
-    const newTodo = new Todo();
-
-    inputValue.forEach((input)=>{
-        const key = input.name;
-        newTodo.key = input.value;
-    })
+    const inputValue = targetElement.parentNode.querySelectorAll(`input:not(input[type="submit"]), textarea, input[type='button'][checked='true'] `);
+    const newTodo = iterator.getTodo(inputValue);
     AddObjectToArray.updateArray(key, newTodo);
     addToLocalStorage(key, newTodo);
 }
@@ -122,6 +127,10 @@ class LocalStorage {
     }
     static getItem(key){
         return localStorage(key);
+    }
+    static getKey(name){
+        if(name) return JSON.parse(localStorage.getItem(name)).length-1;
+        AddObjectToArray.getKey();
     }
 }
 

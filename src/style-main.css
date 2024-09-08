@@ -1,0 +1,67 @@
+
+:root {
+    --background-header: rgb(23 23 23);
+    --background-sidear: rgb(9 9 11);
+    --background-sidebar2: #6b7280;
+}
+
+header {
+    width: 100%;
+    font-size: 2rem;
+    font-weight: 800;
+    padding: 2vw;
+    padding-left: 3vw;
+    background-color: var(--background-header);
+    margin: 2rem 0px 0;
+    box-shadow: 0px 8px 10px 10px var(--background-header);
+    color: white;
+    min-height: 10vh;
+}
+.container {
+    width: 100%;
+    background-color: black;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    min-height: 70vh;
+}
+ul, li {
+    padding: 0;
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    background-color: var(--background-sidebar2);
+    border-right: 2px solid white;
+    align-items: center;
+}
+
+nav li {
+    font-size: 1.5rem;
+    margin: 10px 5px;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+#button {
+    display:flex;
+    align-items: center;
+    margin-left: 1rem;
+    cursor: pointer;
+}
+button#project {
+    font-size: 1rem;
+    padding: 8px 10px;
+    background: none;
+    outline: none;
+    border: none;
+    color: white;
+    margin:0;
+    cursor: pointer;
+}
+.icon {
+    object-fit: cover;
+    height: 1.5rem;
+    width: 1.5rem;
+}

@@ -1,12 +1,13 @@
 import {fetchData, LocalStorage} from "./app-algorithm.js";
 
 import "./taskfield.css";
-
+import "./style-main.css";
 const domController = (function(){
     const submitBtn = document.querySelector("input[type='submit']");
     submitBtn.addEventListener("click", (event)=>{
         event.preventDefault();
-        fetchData(event.target.name);
+        fetchData();
+        displayData(event.target.name);
     })
 })()
 
@@ -61,8 +62,8 @@ const editData = (function(){
 })()
 
 
-function displayData(){
-    const data = LocalStorage.fetchData();
+function displayData(name){
+    const data = LocalStorage.getKey(name); //index of the element in the local storage
 }
 
 export{displayData};
