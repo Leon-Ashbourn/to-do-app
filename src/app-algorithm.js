@@ -6,11 +6,12 @@ const fetchData = (function(){
 })
 
 //create todo object
-class Todo{};
+
+class Todo{}
 
 function createObject(){
     const inputElements = document.querySelectorAll("input:not(input[type='button']), textarea:not(textarea[id='side-note']), input[checked='true']");
-    const newProject = new Todo();
+    const newProject = new Todo();  
     inputElements.forEach((node)=>{
         const key = node.name;
         if(key) newProject[key] = node.value;
@@ -23,6 +24,7 @@ function createObject(){
 class AddObjectToArray {
     static #privateConstructor = true;
     static #object = [];
+    static #objectKey = 0;
     constructor(){
         if(!AddObjectToArray.#privateConstructor){
             throw SyntaxError("cannot create objects from the constructor");
@@ -31,8 +33,13 @@ class AddObjectToArray {
 
     static addToArray(todoObject){
         const miniVersion = AddObjectToArray.#object;
+        let count = this.#objectKey;
         miniVersion.push(todoObject);
-        addToLocalStorage(miniVersion.length-1, todoObject);
+        addToLocalStorage(count, todoObject);
+        if(!todoObject.project) this.#objectKey++;
+    }
+    static getKey(){
+        return this.#objectKey;
     }
 
     static updateArray(key, value){
@@ -47,9 +54,28 @@ class AddObjectToArray {
 //add each object to the local storage
 
 function addToLocalStorage(key, value){
-    if(value.name) key = value.name;
+    if(value.project) {
+        key = value.project;
+        checkStorageForProject(key, value);
+        return;
+    };
+    value.index = AddObjectToArray.getKey();
     value = JSON.stringify(value);
     localStorage.setItem(key, value);
+}
+
+function checkStorageForProject(key, value){
+    if(localStorage.getItem(key)) {
+        const project = JSON.parse(localStorage.getItem(key));
+        value.index = project.length;
+        project.push(value);
+        localStorage.setItem(key, JSON.stringify(project));
+        return;
+    };
+    let project = [value];
+    value.index = 0;
+    project = JSON.stringify(project);
+    localStorage.setItem(key, project);
 }
 
 //user chose to edit the list
