@@ -1,4 +1,4 @@
-import {fetchData} from "./app-algorithm.js";
+import {fetchData, LocalStorage} from "./app-algorithm.js";
 
 import "./taskfield.css";
 
@@ -6,8 +6,7 @@ const domController = (function(){
     const submitBtn = document.querySelector("input[type='submit']");
     submitBtn.addEventListener("click", (event)=>{
         event.preventDefault();
-        console.log(event.target);
-        fetchData();
+        fetchData(event.target.name);
     })
 })()
 
@@ -57,9 +56,13 @@ function restoreInput(target){
 //fetch data from local storage
 
 const editData = (function(){
-
+    // const editBtn = document.querySelector("edit-btn");
+    // editBtn.addEventListener("click", ()=> displayData());
 })()
 
 
-function displayData(){}
+function displayData(){
+    const data = LocalStorage.fetchData();
+}
+
 export{displayData};
