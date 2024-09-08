@@ -9,7 +9,7 @@ const fetchData = (function(){
 class Todo{};
 
 function createObject(){
-    const inputElements = document.querySelectorAll("input:not(input[type='submit'], input[type='button']) textarea, input[data-check='checked']");
+    const inputElements = document.querySelectorAll("input:not(input[type='submit'], input[type='button']), textarea:not(textarea[id='side-note']), input[checked='true']");
     const newProject = new Todo();
     inputElements.forEach((node)=>{
         const key = node.name;
@@ -41,7 +41,7 @@ class AddObjectToArray {
 
 }
 
-//add eac object to the local storage
+//add each object to the local storage
 
 function addToLocalStorage(key, value){
     value = JSON.stringify(value);
@@ -73,13 +73,27 @@ function updateLocalStorage(key){
     addToLocalStorage(key, newTodo);
 }
 
-//fetch data from local storage
+//manipulating data from local storage
 
+class LocalStorage {
+    static data;
+    static fetchData(){
+        this.data = fetchDataFromLocalStore();
+        return this.data;
+    }
+    static sortData(parameter){
+        sortLocalStorageData(parameter);
+    }
+}
+
+class Storage {};
 function fetchDataFromLocalStore(){
+    const storageObject = new Storage();
     localStorage.forEach((key)=>{
         const todoData = localStorage.getItem(key);
-        // displayData(todoData);
+        storageObject.key = todoData;
     })
+    return storageObject;
 }
 
 //function to deal with completed projects
@@ -95,4 +109,4 @@ function exceedDueDate(){
 }
 
 
-export{fetchData}
+export{fetchData, LocalStorage};

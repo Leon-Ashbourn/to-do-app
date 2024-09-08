@@ -95,6 +95,14 @@ label {
     font-size: 1rem;
 }
 
+#task-description{
+    overflow-y: scroll;
+    scrollbar-width: none;
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
 /* due date and priority order*/
 
 #task-field>div:nth-child(2){

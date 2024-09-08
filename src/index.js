@@ -6,6 +6,7 @@ const domController = (function(){
     const submitBtn = document.querySelector("input[type='submit']");
     submitBtn.addEventListener("click", (event)=>{
         event.preventDefault();
+        console.log(event.target);
         fetchData();
     })
 })()
@@ -24,14 +25,17 @@ class ComputedStyles {
     static computedStyles;
     static getStyle(target, property){
         this.computedStyles = getComputedStyle(target);
-        console.log(this.computedStyles);
         return this.computedStyles.getPropertyValue(property);
+    }
+    static defaultStyle(target, property){
+        this.computedStyles = getComputedStyle(target);
+        //just a check up for future reference where we can get the default styles applied on a certain element in a specific browser
     }
 }
 
 function modifyInput(target) {
-    target.setAttribute("data-check", "checked");
-    const appliedStyle = ComputedStyles.getStyle(target, "color");
+    target.setAttribute("checked", "true");
+    const appliedStyle = ComputedStyles.getStyle(target, "background-color");
 
     target.style = `background-color: ${appliedStyle}; color: white`;
 }
@@ -42,8 +46,20 @@ function restoreInput(target){
     button.forEach((btn)=>{
         if(btn === target) return;
 
-        btn.removeAttribute("data-checked");
+        btn.removeAttribute("checked");
         const backgroundColor = ComputedStyles.getStyle(btn, "background-color");
+        if(backgroundColor === 'rgba(0, 0, 0, 0)') return;
         btn.style = `color: ${backgroundColor}; background-color: none`;
     })
 }
+
+
+//fetch data from local storage
+
+const editData = (function(){
+
+})()
+
+
+function displayData(){}
+export{displayData};
