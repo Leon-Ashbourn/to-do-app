@@ -1,17 +1,63 @@
 import {fetchData, LocalStorage} from "./app-algorithm.js";
-import { embedElements, inboxData } from "./embedel.js";
+import { embedElements, inboxData, DomHelper} from "./embedel.js";
+import {format} from "date-fns";
 
 import "./style-main.css";
 import "./taskfield.css";
 const domController = (function(){
     const submitBtn = document.querySelector("input[type='submit']");
+    const tabBtn = document.querySelectorAll("nav>ul>li");
+    const projectBtn = document.querySelector("#button");
+
     document.addEventListener("load", inboxData());
     submitBtn.addEventListener("click", (event)=>{
         event.preventDefault();
         fetchData();
         displayData(event.target.name);
     })
+    tabBtn.forEach((btn)=>{
+        btn.addEventListener("click", (event)=>{
+            event.target.style = `background-color: ${ComputedStyles.getStyle(event.target, "background-color")}`;
+            modifyTab(event.target);
+            displayData(event.target.name);
+        })
+    })
+
+    projectBtn.addEventListener("click", ()=>{
+        console.log("...")
+        const ele = ["div", "label", "input", "input", "input"];
+        const attr = [
+            {"class": "project"},
+            {"for": "project-heading"},
+            {"id": "project-heading", "type": "text"},
+            {"type": "submit", "id": "proj-add-btn", "value": "Add"},
+            {"type": "button", "id": "proj-cancel-btn", "value": "cancel"}
+        ]
+        createElement(ele);
+        for(let index in ele){
+            DomHelper.setAttributes(ele[index], attr[index]);
+        }
+        DomHelper.appendChildren(ele, 0);
+        
+        projectBtn.parentNode.insertBefore(ele[0], projectBtn);
+    })
 })()
+
+function createElement(element){
+    for(let key in element){
+        const ele  = document.createElement(element[key]);
+        element[key] = ele;
+
+        console.log(element[key]);
+    }
+}
+function modifyTab(target){
+    const submitBtn = document.querySelectorAll("nav>ul>li");
+    submitBtn.forEach((node)=>{
+        if(node === target) return;
+        node.style = `background-color: ${ComputedStyles.getStyle(node.parentNode,"background-color")}`;
+    })
+}
 
 const checkPriority = (function(){
     const button = document.querySelectorAll("input[type='button']");
@@ -72,4 +118,8 @@ function deleteBtn(){
     })
     displayData(name)
 }
+
+//functions for each tab menu
+
+
 export{displayData};

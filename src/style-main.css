@@ -40,6 +40,7 @@ ul, li {
 
 nav {
     display: flex;
+    min-width: 200px;
     flex-direction: column;
     position: sticky;
     background-color: var(--background-sidebar2);
@@ -88,7 +89,7 @@ button#project {
 }
 
 .container li:not(ul:nth-child(2)>li):hover {
-    background-color: var(--background-li-hover);
+    background-color: var(--background-li-hover) !important;
 }
 
 /* main content*/

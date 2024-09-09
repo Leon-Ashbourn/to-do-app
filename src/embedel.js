@@ -1,7 +1,7 @@
 import { LocalStorage } from "./app-algorithm";
 import del from "./icons/delete.png";
 import edit from "./icons/edit.png";
-
+import {format} from "date-fns";
 
 const embedElements = (function(tabArea){
     chooseContentToShow(tabArea);
@@ -33,7 +33,6 @@ function inboxData(){
 }
 
 function embedHtmlElements(data){
-    data = JSON.parse(data);
     const content = document.querySelector("#content");
     const todoElements = ["div", "label", "input", "p", "img", "img", "p"];
     for(let key in data){
@@ -53,33 +52,36 @@ function embedHtmlElements(data){
             {"class":"date"}
         ]
         for(let index in element){
-            setAttributes(element[index], attrList[index]);
+            DomHelper.setAttributes(element[index], attrList[index]);
         }
-        const text = ["", "", "", `${data[key].title}`, "", "", `${new Date(data[key]["Due date"])}`];
-        textEmbed(element, text);
-        appendChildren(element, 0);
+        const text = ["", "", "", `${data[key].title}`, "", "", `${format(new Date(data[key]["Due date"]), "dd-MM-yyyy")}`];
+        DomHelper.textEmbed(element, text);
+        DomHelper.appendChildren(element, 0);
         content.appendChild(element[0]);
     }
 }
 
-function appendChildren(ele, index){
-    index = `${index}`;
-    for(let key in ele){
-        if(!(key === index)) ele[index].appendChild(ele[key]) ;
+
+class DomHelper {
+    static setAttributes(ele, attributes){
+
+        for(let key in attributes){
+            ele.setAttribute(key, attributes[key]);
+        }
+    }
+    static appendChildren(ele, index){
+        index = `${index}`;
+        for(let key in ele){
+            if(!(key === index)) ele[index].appendChild(ele[key]) ;
+        }
+    }
+    static textEmbed(ele, text){
+        for(let key in ele){
+            ele[Number(key)].textContent = text[Number(key)];
+        }
     }
 }
 
-function textEmbed(ele, text){
-    for(let key in ele){
-        ele[Number(key)].textContent = text[Number(key)];
-    }
-}
-
-function setAttributes(ele, attributes){
-    for(let key in attributes){
-        ele.setAttribute(key, attributes[key]);
-    }
-}
 
 
-export{embedElements, inboxData};
+export{embedElements, inboxData, DomHelper};

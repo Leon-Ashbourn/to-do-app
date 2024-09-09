@@ -1,3 +1,4 @@
+import {format} from "date-fns";
 
 /*fetch data*/
 
@@ -14,6 +15,7 @@ const iterator= (function(){
         target.forEach((node)=>{
             const key = node.name;
             if(key) newTodo[key] = node.value;
+            if(!node.value && key === "Due date") newTodo[key] = format(new Date, "dd-MM-yyyy");
         }) //fill up with data
         return newTodo;
     }
@@ -138,10 +140,10 @@ function storageIterator(){
     let count = 0;
     while(localStorage.key(count)){
         const key = localStorage.key(count);
-        if(Number(key) || Number(key) === 0) storageObject[key] = localStorage.getItem(`${key}`);
+        if(Number(key) || Number(key) === 0) storageObject[key] =   JSON.parse(localStorage.getItem(`${key}`));
         count++;
     }
-    return JSON.stringify(storageObject);
+    return storageObject;
 }
 //delete the data fromo the local storage if the uer chose delete option.
 
