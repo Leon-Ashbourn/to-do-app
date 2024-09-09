@@ -16,6 +16,10 @@ module.exports = merge(commonConfig, {
             {
                 test: /\.html$/,
                 use: "html-loader"
+            },
+            {
+                test: /\.(png|svg|jpg)$/,
+                type: "asset/resource"
             }
         ]
     }

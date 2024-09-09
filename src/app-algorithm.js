@@ -130,7 +130,7 @@ class LocalStorage {
 
 function fetchDataFromLocalStore(name){
     if(name) JSON.parse(localStorage.getItem(name));
-    return console.log(storageIterator());
+    return storageIterator();
 }
 
 function storageIterator(){
@@ -138,11 +138,10 @@ function storageIterator(){
     let count = 0;
     while(localStorage.key(count)){
         const key = localStorage.key(count);
-        if(Number(key)) storageObject[key] = localStorage.getItem(key);
+        if(Number(key) || Number(key) === 0) storageObject[key] = localStorage.getItem(`${key}`);
         count++;
-        console.log(key);
     }
-    return storageObject;
+    return JSON.stringify(storageObject);
 }
 //delete the data fromo the local storage if the uer chose delete option.
 
