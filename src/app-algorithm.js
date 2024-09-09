@@ -55,10 +55,6 @@ class AddObjectToArray {
         AddObjectToArray.#object[key] = value;
 
     }
-    static getData(index){
-        return this.#object[index];
-    }
-
 }
 
 //add each object to the local storage
@@ -69,7 +65,6 @@ function addToLocalStorage(key, value){
         checkStorageForProject(key, value);
         return;
     };
-    value.index = AddObjectToArray.getKey();
     value = JSON.stringify(value);
     localStorage.setItem(key, value);
     console.log("here");
@@ -78,13 +73,11 @@ function addToLocalStorage(key, value){
 function checkStorageForProject(key, value){
     if(localStorage.getItem(key)) {
         const project = JSON.parse(localStorage.getItem(key));
-        value.index = project.length;
         project.push(value);
         localStorage.setItem(key, JSON.stringify(project));
         return;
     };
     let project = [value];
-    value.index = 0;
     project = JSON.stringify(project);
     localStorage.setItem(key, project);
 }
@@ -115,15 +108,12 @@ function updateLocalStorage(targetElement){
 
 class LocalStorage {
     static data;
-    static fetchFullData(){
-        this.data = fetchDataFromLocalStore();
+    static fetchFullData(target){
+        this.data = fetchDataFromLocalStore(target);
         return this.data;
     }
     static sortData(parameter){
         sortLocalStorageData(parameter);
-    }
-    static fetchData(dataIndex, name){
-        return fetch(dataIndex, name);
     }
     static getItem(key){
         return localStorage(key);
@@ -132,33 +122,41 @@ class LocalStorage {
         if(name) return JSON.parse(localStorage.getItem(name)).length-1;
         AddObjectToArray.getKey();
     }
+    static deleteFromLocalStore(target){
+        deleteData(target);
+    }
 }
 
-function fetch(index){
-    AddObjectToArray.getData(index);
+
+function fetchDataFromLocalStore(name){
+    if(name) JSON.parse(localStorage.getItem(name));
+    return console.log(storageIterator());
 }
 
-class Storage {};
-
-function fetchDataFromLocalStore(){
-    const storageObject = new Storage();
-    localStorage.forEach((key)=>{
-        const todoData = localStorage.getItem(key);
-        storageObject.key = todoData;
-    })
+function storageIterator(){
+    const storageObject = {};
+    let count = 0;
+    while(localStorage.key(count)){
+        const key = localStorage.key(count);
+        if(Number(key)) storageObject[key] = localStorage.getItem(key);
+        count++;
+        console.log(key);
+    }
     return storageObject;
 }
+//delete the data fromo the local storage if the uer chose delete option.
 
-//function to deal with completed projects
-
-function CompletedTasks(){
-    //
-}
-
-//function to alert the user when the due date exceeded
-
-function exceedDueDate(){
-    //
+function deleteData(target){
+    const index = Number(target["data-key"]);
+    if(target.name) {
+        const key = target.name;
+        let data = JSON.parse(localStorage.getItem(key));
+        data.slice(index, 1);
+        data = JSON.stringify(data);
+        localStorage.setItem(key, data);
+        return;
+    }
+    localStorage.removeItem(index);
 }
 
 

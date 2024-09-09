@@ -3,7 +3,10 @@
     --background-header: rgb(23 23 23);
     --background-sidear: rgb(9 9 11);
     --background-sidebar2: #6b7280;
+    --background-li-hover: #cbd5e1;
 }
+
+/* header styling*/
 
 header {
     width: 100%;
@@ -17,15 +20,21 @@ header {
     color: white;
     min-height: 10vh;
 }
+
+/* container for sidebar and main content*/
+
 .container {
     width: 100%;
-    background-color: black;
     display: grid;
     grid-template-columns: 20% 80%;
     min-height: 70vh;
+    background-color: white;
 }
+
+/* ------ styling sidebar ---------- */
+
 ul, li {
-    padding: 0;
+    padding: 10px 0 0 0;
     margin: 0;
 }
 
@@ -37,19 +46,30 @@ nav {
     border-right: 2px solid white;
     align-items: center;
 }
-
+ul {
+    width: 100%;
+}
 nav li {
     font-size: 1.5rem;
     margin: 10px 5px;
     padding-bottom: 10px;
     cursor: pointer;
+    gap: 10px;
 }
-#button {
+
+nav ul:nth-child(2) li{
+    font-size: 1.3rem;
+}
+
+/* new project button */
+
+#button, li {
     display:flex;
     align-items: center;
     margin-left: 1rem;
     cursor: pointer;
 }
+
 button#project {
     font-size: 1rem;
     padding: 8px 10px;
@@ -60,8 +80,19 @@ button#project {
     margin:0;
     cursor: pointer;
 }
+
 .icon {
     object-fit: cover;
     height: 1.5rem;
     width: 1.5rem;
+}
+
+.container li:not(ul:nth-child(2)>li):hover {
+    background-color: var(--background-li-hover);
+}
+
+/* main content*/
+
+#content {
+    padding: 3vw;
 }

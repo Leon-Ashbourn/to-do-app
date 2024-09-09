@@ -1,9 +1,11 @@
 import {fetchData, LocalStorage} from "./app-algorithm.js";
+import { embedElements, inboxData } from "./embedel.js";
 
-import "./taskfield.css";
 import "./style-main.css";
+import "./taskfield.css";
 const domController = (function(){
     const submitBtn = document.querySelector("input[type='submit']");
+    document.addEventListener("load", inboxData());
     submitBtn.addEventListener("click", (event)=>{
         event.preventDefault();
         fetchData();
@@ -54,16 +56,20 @@ function restoreInput(target){
 }
 
 
-//fetch data from local storage
-
-const editData = (function(){
-    // const editBtn = document.querySelector("edit-btn");
-    // editBtn.addEventListener("click", ()=> displayData());
-})()
-
-
 function displayData(name){
     const data = LocalStorage.getKey(name); //index of the element in the local storage
+
 }
 
+function deleteBtn(){
+    const deleteBtn = document.querySelectorAll(".delete-btn");
+    let name ;
+    deleteBtn.forEach((delBtn)=>{
+        delBtn.addEventListener("click", (event)=> {
+            name = event.target;
+            LocalStorage.deleteFromLocalStore(event.target);
+        });
+    })
+    displayData(name)
+}
 export{displayData};
