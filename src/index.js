@@ -1,15 +1,16 @@
 import {fetchData, LocalStorage} from "./app-algorithm.js";
-import { embedElements, inboxData, DomHelper} from "./embedel.js";
-import {format} from "date-fns";
+import { embedElements, DomHelper} from "./embedel.js";
+
+
 
 import "./style-main.css";
 import "./taskfield.css";
+
 const domController = (function(){
     const submitBtn = document.querySelector("input[type='submit']");
     const tabBtn = document.querySelectorAll("nav>ul>li");
-    const projectBtn = document.querySelector("#button");
+    
 
-    document.addEventListener("load", inboxData());
     submitBtn.addEventListener("click", (event)=>{
         event.preventDefault();
         fetchData();
@@ -19,12 +20,17 @@ const domController = (function(){
         btn.addEventListener("click", (event)=>{
             event.target.style = `background-color: ${ComputedStyles.getStyle(event.target, "background-color")}`;
             modifyTab(event.target);
-            displayData(event.target.name);
+            displayData(event.target.value);
         })
     })
+})()
+
+// new project input
+
+const newProject = (function(){
+    const projectBtn = document.querySelector("#button");
 
     projectBtn.addEventListener("click", ()=>{
-        console.log("...")
         const ele = ["div", "label", "input", "input", "input"];
         const attr = [
             {"class": "project"},
@@ -43,14 +49,17 @@ const domController = (function(){
     })
 })()
 
+
+//create new elements
 function createElement(element){
     for(let key in element){
         const ele  = document.createElement(element[key]);
         element[key] = ele;
-
-        console.log(element[key]);
     }
 }
+
+//modify the tab menu to it's usual background color
+
 function modifyTab(target){
     const submitBtn = document.querySelectorAll("nav>ul>li");
     submitBtn.forEach((node)=>{
@@ -102,9 +111,8 @@ function restoreInput(target){
 }
 
 
-function displayData(name){
-    const data = LocalStorage.getKey(name); //index of the element in the local storage
-
+function displayData(value){
+    embedElements(value);
 }
 
 function deleteBtn(){

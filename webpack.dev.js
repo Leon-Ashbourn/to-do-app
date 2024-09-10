@@ -1,6 +1,5 @@
 const {merge} = require("webpack-merge");
 const commonConfig= require("./webpack.common.js");
-const {format} = require("date-fns");
 
 module.exports = merge(commonConfig, {
     mode: "development",

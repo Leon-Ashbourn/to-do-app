@@ -15,7 +15,8 @@ const iterator= (function(){
         target.forEach((node)=>{
             const key = node.name;
             if(key) newTodo[key] = node.value;
-            if(!node.value && key === "Due date") newTodo[key] = format(new Date, "dd-MM-yyyy");
+            if(!node.value && key === "Due date") newTodo[key] = format(new Date, "MM-dd-yyyy");
+            if(node.value && key === "Due date") newTodo[key] = format(new Date(node.value),"MM-dd-yyyy");
         }) //fill up with data
         return newTodo;
     }
