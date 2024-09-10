@@ -25,10 +25,9 @@ header {
 
 .container {
     width: 100%;
-    display: grid;
-    grid-template-columns: 20% 80%;
-    min-height: 70vh;
-    background-color: white;
+    display: flex;
+    min-height: 80vh;
+    background-color: white;    
 }
 
 /* ------ styling sidebar ---------- */
@@ -40,7 +39,6 @@ ul, li {
 
 nav {
     display: flex;
-    min-width: 200px;
     flex-direction: column;
     position: sticky;
     background-color: var(--background-sidebar2);
@@ -64,7 +62,7 @@ nav ul:nth-child(2) li{
 
 /* new project button */
 
-#button, li {
+#add-new-proj-button, li {
     display:flex;
     align-items: center;
     margin-left: 1rem;
@@ -89,11 +87,11 @@ button#project {
 }
 
 .container li:not(ul:nth-child(2)>li):hover {
-    background-color: var(--background-li-hover) !important;
+    background-color: var(--background-li-hover);
 }
 
 /* main content*/
 
 #content {
-    padding: 3vw;
+    padding: 3vw;   
 }

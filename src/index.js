@@ -28,7 +28,7 @@ const domController = (function(){
 // new project input
 
 const newProject = (function(){
-    const projectBtn = document.querySelector("#button");
+    const projectBtn = document.querySelector("#add-new-proj-button");
 
     projectBtn.addEventListener("click", ()=>{
         const ele = ["div", "label", "input", "input", "input"];
@@ -44,11 +44,32 @@ const newProject = (function(){
             DomHelper.setAttributes(ele[index], attr[index]);
         }
         DomHelper.appendChildren(ele, 0);
-        
+        addEvent(ele[3], false);
+        addEvent(ele[4], true);
         projectBtn.parentNode.insertBefore(ele[0], projectBtn);
+        
     })
 })()
 
+//project creation or cancelling input
+
+function addEvent(target, para){
+    target.addEventListener("click", (event)=>{
+        if(para) removeInput(event);
+        const value = event.targe.parentNode.querySelector("input[type='text']").value;
+
+        const newEle = createElement(["div"]);
+        DomHelper.setAttributes(newEle, {"value": `${value}`, "name": `${value}`, "class": "project-tab"});
+        const node  =event.targe.parentNode.parentNode;
+        const childNode = parentNode.querySelector("project-tab:last-of-type, ul:nth-child(2)");
+        removeInput(event);
+        node.insertBefore(newEle, childNode);
+        
+    })
+}
+function removeInput(event){
+    return event.targe.parentNode.parentNode.removeChild(event.target);
+}
 
 //create new elements
 function createElement(element){
