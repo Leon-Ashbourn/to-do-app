@@ -1,4 +1,4 @@
-import {fetchData, LocalStorage} from "./app-algorithm.js";
+import {addToLocalStorage, fetchData, LocalStorage} from "./app-algorithm.js";
 import { embedElements, DomHelper} from "./embedel.js";
 
 
@@ -8,13 +8,16 @@ import "./taskfield.css";
 
 const domController = (function(){
     const submitBtn = document.querySelector("input[type='submit']");
-    const tabBtn = document.querySelectorAll("nav>ul>li");
+    const tabBtn = document.querySelectorAll("nav>ul:first-child>li");
     
-
+    window.addEventListener("load", ()=>{
+        tabBtn[0].click(); 
+    })
     submitBtn.addEventListener("click", (event)=>{
         event.preventDefault();
         fetchData();
         displayData(event.target.name);
+        submitBtn.parentNode.parentNode.parentNode.style = "display: none";
     })
     tabBtn.forEach((btn)=>{
         btn.addEventListener("click", (event)=>{
@@ -39,7 +42,7 @@ const newProject = (function(){
             {"type": "submit", "id": "proj-add-btn", "value": "Add"},
             {"type": "button", "id": "proj-cancel-btn", "value": "cancel"}
         ]
-        createElement(ele);
+        ChildElement.createElement(ele);
         for(let index in ele){
             DomHelper.setAttributes(ele[index], attr[index]);
         }
@@ -51,33 +54,48 @@ const newProject = (function(){
     })
 })()
 
-//project creation or cancelling input
+//project creation or cancelling input using event listeners
 
 function addEvent(target, para){
     target.addEventListener("click", (event)=>{
-        if(para) removeInput(event);
-        const value = event.targe.parentNode.querySelector("input[type='text']").value;
+        if(para) {
+            ChildElement.removeInput(event);
+            return;
+        };
+        const value = event.target.parentNode.querySelector("input[type='text']").value;
 
-        const newEle = createElement(["div"]);
-        DomHelper.setAttributes(newEle, {"value": `${value}`, "name": `${value}`, "class": "project-tab"});
-        const node  =event.targe.parentNode.parentNode;
-        const childNode = parentNode.querySelector("project-tab:last-of-type, ul:nth-child(2)");
-        removeInput(event);
-        node.insertBefore(newEle, childNode);
-        
+        const newEle = ["div"];
+        ChildElement.createElement(newEle);
+        DomHelper.setAttributes(newEle[0], {"value": `${value}`, "name": "project", "class": "project-tab"});
+        const node  =event.target.parentNode.parentNode;
+        let childNode = node.querySelector("project-tab:last-of-type, ul:nth-child(2)");
+        ChildElement.removeInput(event);
+        childNode = Array.isArray(childNode)? childNode[0] : childNode ;
+        DomHelper.textEmbed(newEle, [`# ${value}`]);
+        addToLocalStorage(value, []);
+        ChildElement.insert(node, newEle[0], childNode.nextSibling);
     })
 }
-function removeInput(event){
-    return event.targe.parentNode.parentNode.removeChild(event.target);
-}
 
-//create new elements
-function createElement(element){
-    for(let key in element){
-        const ele  = document.createElement(element[key]);
-        element[key] = ele;
+//methods for child elements
+
+class ChildElement{
+
+    static removeInput(event){ //remove input element from projects
+        return event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+    }
+    static createElement(element){  //create new elements
+        for(let key in element){
+            const ele  = document.createElement(element[key]);
+            element[key] = ele;
+        }
+    }
+    static insert(node, newEl, child){
+        return node.insertBefore(newEl, child);
     }
 }
+
+
 
 //modify the tab menu to it's usual background color
 
@@ -148,7 +166,8 @@ function deleteBtn(){
     displayData(name)
 }
 
-//functions for each tab menu
+//delete todo's from local storage on user's request
+
 
 
 export{displayData};

@@ -94,8 +94,8 @@ function embedHtmlElements(data){
             {"for" : "todo-name"},
             {"id": "todo-name", "type": "checkbox", "name": "todo-list"},
             {"id" : "todo-title"},
-            {"src": `${del}`, "alt": "edit", "data-key": `${key}`,"name": `${data[key].name}`, "class": "icon"},
-            {"src": `${edit}`, "alt": "delete", "data-key": `${key}`, "name": `${data[key].name}`, "class": "icon"},
+            {"src": `${del}`, "alt": "delete", "data-key": `${key}`,"name": `${data[key].name}`, "class": "icon delete"},
+            {"src": `${edit}`, "alt": "edit", "data-key": `${key}`, "name": `${data[key].name}`, "class": "icon edit"},
             {"class":"date"}
         ]
         for(let index in element){
@@ -105,9 +105,19 @@ function embedHtmlElements(data){
         DomHelper.textEmbed(element, text);
         DomHelper.appendChildren(element, 0);
         content.appendChild(element[0]);
+
+        // element[4]
+        editFunction(element[5]);
     }
 }
-
+function editFunction(event){
+    event.addEventListener("click", ()=>{
+        const container = document.querySelector(".task-container");
+        container.style = "display: block";
+        const button = document.querySelector("input[type='submit']");
+        button.setAttribute("data-key",`${event.target.getAttribute('data-key')}`); //need to debug
+    })
+}
 
 class DomHelper {
     static setAttributes(ele, attributes){
@@ -129,6 +139,6 @@ class DomHelper {
     }
 }
 
-
+//delete todo's from local storage on user's request
 
 export{embedElements, DomHelper};

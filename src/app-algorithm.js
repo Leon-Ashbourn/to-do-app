@@ -36,7 +36,6 @@ function createObject(){
 class AddObjectToArray {
     static #privateConstructor = true;
     static #object = [];
-    static #objectKey = 0;
     constructor(){
         if(!AddObjectToArray.#privateConstructor){
             throw SyntaxError("cannot create objects from the constructor");
@@ -45,13 +44,18 @@ class AddObjectToArray {
 
     static addToArray(todoObject){
         const miniVersion = AddObjectToArray.#object;
-        let count = this.#objectKey;
         miniVersion.push(todoObject);
-        addToLocalStorage(count, todoObject);
-        if(!todoObject.project) this.#objectKey++;
+        addToLocalStorage( this.getKey(), todoObject);
     }
-    static getKey(){
-        return this.#objectKey;
+    static getKey(){    
+        let tempKey = localStorage.key(0);
+        let count = 0;
+        let key = 0;
+        while(tempKey){
+            if(Number(tempKey)) key++;
+            tempKey = localStorage.key(++count);  
+        }
+        return key;
     }
 
     static updateArray(key, value){
@@ -70,7 +74,6 @@ function addToLocalStorage(key, value){
     };
     value = JSON.stringify(value);
     localStorage.setItem(key, value);
-    console.log("here");
 }
 
 function checkStorageForProject(key, value){
@@ -80,9 +83,6 @@ function checkStorageForProject(key, value){
         localStorage.setItem(key, JSON.stringify(project));
         return;
     };
-    let project = [value];
-    project = JSON.stringify(project);
-    localStorage.setItem(key, project);
 }
 
 //user chose to edit the list
@@ -132,7 +132,7 @@ class LocalStorage {
 
 
 function fetchDataFromLocalStore(name){
-    if(name) JSON.parse(localStorage.getItem(name));
+    if(name) return JSON.parse(localStorage.getItem(name));
     return storageIterator();
 }
 
@@ -162,4 +162,4 @@ function deleteData(target){
 }
 
 
-export{fetchData, LocalStorage};
+export{fetchData, LocalStorage, addToLocalStorage};
