@@ -2,8 +2,8 @@ import {format} from "date-fns";
 
 /*fetch data*/
 
-const fetchData = (function(){
-    createObject();
+const fetchData = (function(dataKey){
+    createObject(dataKey);
 })
 
 //create todo object
@@ -24,10 +24,10 @@ const iterator= (function(){
     return {getTodo};
 })()
 
-function createObject(){
+function createObject(dataKey){
     const inputElements = document.querySelectorAll("input:not(input[type='button']), textarea:not(textarea[id='side-note']), input[checked='true']");
     const newProject = iterator.getTodo(inputElements);
-    AddObjectToArray.addToArray(newProject);
+    AddObjectToArray.addToArray(newProject, dataKey);
 }
 
 
@@ -42,7 +42,8 @@ class AddObjectToArray {
         }
     }
 
-    static addToArray(todoObject){
+    static addToArray(todoObject, dataKey){
+        if(dataKey) {addToLocalStorage( dataKey , todoObject); return}
         const miniVersion = AddObjectToArray.#object;
         miniVersion.push(todoObject);
         addToLocalStorage( this.getKey(), todoObject);

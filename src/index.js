@@ -15,7 +15,7 @@ const domController = (function(){
     })
     submitBtn.addEventListener("click", (event)=>{
         event.preventDefault();
-        fetchData();
+        fetchData(submitBtn.getAttribute("data-key"));
         displayData(event.target.name);
         submitBtn.parentNode.parentNode.parentNode.style = "display: none";
     })
@@ -165,8 +165,6 @@ function deleteBtn(){
     })
     displayData(name)
 }
-
-//delete todo's from local storage on user's request
 
 
 

@@ -111,11 +111,11 @@ function embedHtmlElements(data){
     }
 }
 function editFunction(event){
-    event.addEventListener("click", ()=>{
+    event.addEventListener("click", (eve)=>{
         const container = document.querySelector(".task-container");
-        container.style = "display: block";
+        container.style.display ="block";
         const button = document.querySelector("input[type='submit']");
-        button.setAttribute("data-key",`${event.target.getAttribute('data-key')}`); //need to debug
+        button.setAttribute("data-key",`${eve.target.getAttribute('data-key')}`); //need to de    bug
     })
 }
 
