@@ -53,7 +53,7 @@ class AddObjectToArray {
         let count = 0;
         let key = 0;
         while(tempKey){
-            if(Number(tempKey)) key++;
+            if(!isNaN(Number(tempKey))) key++;
             tempKey = localStorage.key(++count);  
         }
         return key;
@@ -131,7 +131,7 @@ class LocalStorage {
     }
     static getKey(name){
         if(name) return JSON.parse(localStorage.getItem(name)).length-1;
-        AddObjectToArray.getKey();
+        return AddObjectToArray.getKey();
     }
     static deleteFromLocalStore(target){
         deleteData(target);

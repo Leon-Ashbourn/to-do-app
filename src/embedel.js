@@ -82,8 +82,9 @@ function embedHtmlElements(data){
 
     const content = document.querySelector("#content");
     const todoElements = ["div","img","button", "div", "label", "input", "p", "img", "img", "p"];
+    let check = true;
+    if(data) content.textContent = "" ;
     for(let key in data){
-        content.textContent = "";
         const element = [];
         todoElements.forEach((value)=>{
             const ele = document.createElement(value);
@@ -92,7 +93,7 @@ function embedHtmlElements(data){
     
         const attrList = [
             {"class": "add-task-button", "name": "", "value": ""},
-            {"src": `${add}`, "height": "1.5rem", "width": "1.5rem", "alt": "add"},
+            {"src": `${add}`, "alt": "add", "class": "icon"},
             {"id": "task-button"},
             {"class": "todo" },
             {"for" : "todo-name"},
@@ -105,22 +106,27 @@ function embedHtmlElements(data){
         for(let index in element){
             DomHelper.setAttributes(element[index], attrList[index]);
         }
-        const button = element.splice(0,3);
-        const text = ["", "", "", `${data[key].title}`, "", "", `${format(new Date(data[key]["Due date"]), "dd-MM-yyyy")}`];
+        const text = [, ,"Add", "", "", "", `${data[key].title}`, "", "", `${format(new Date(data[key]["Due date"]), "dd-MM-yyyy")}`];
         DomHelper.textEmbed(element, text);
+        const button = element.splice(0,3);
+        button[1].style = "height: 1.5rem, width: 1.5rem";
         DomHelper.appendChildren(button, 0);
         DomHelper.appendChildren(element, 0);
-        content.append(button[0], element[0]);
+        if(check) content.appendChild(button[0]); editFunction(button[0]);
+        content.appendChild(element[0]);
         // element[4]
         editFunction(element[5]);
+        check = false;
     }
 }
 function editFunction(element){
     element.addEventListener("click", (event)=>{
+        let dataKey = event.target.getAttribute("data-key");
+        if(!dataKey) dataKey = LocalStorage.getKey("");
         const container = document.querySelector(".task-container");
         container.style.display ="block";
         const button = document.querySelector("input[type='submit']");
-        button.setAttribute("data-key",`${event.target.getAttribute('data-key')}`); 
+        button.setAttribute("data-key",`${dataKey}`); 
     })
 }
 
