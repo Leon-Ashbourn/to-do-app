@@ -119,8 +119,15 @@ class LocalStorage {
     static sortData(parameter){
         sortLocalStorageData(parameter);
     }
-    static getItem(key){
-        return localStorage(key);
+    static getProjectKey(){
+        const keys = [];
+        let count = 0;
+        while(localStorage.key(count)){
+            const key = localStorage.key(count);
+            if(!(Number(key)) || Number(key) !== 0) keys.push(localStorage.key(count));
+            count ++;
+        }
+        return keys;
     }
     static getKey(name){
         if(name) return JSON.parse(localStorage.getItem(name)).length-1;

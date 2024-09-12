@@ -1,6 +1,7 @@
 import { LocalStorage } from "./app-algorithm";
 import del from "./icons/delete.png";
 import edit from "./icons/edit.png";
+import add from "./icons/add.png"
 import {format, formatDistance} from "date-fns";
 
 const embedElements = function(tabArea){
@@ -80,16 +81,19 @@ function filterLocalStorage(data, check, check2){
 function embedHtmlElements(data){
 
     const content = document.querySelector("#content");
-    content.textContent = "";
-    const todoElements = ["div", "label", "input", "p", "img", "img", "p"];
+    const todoElements = ["div","img","button", "div", "label", "input", "p", "img", "img", "p"];
     for(let key in data){
+        content.textContent = "";
         const element = [];
         todoElements.forEach((value)=>{
             const ele = document.createElement(value);
             element.push(ele);
         })
-
+    
         const attrList = [
+            {"class": "add-task-button", "name": "", "value": ""},
+            {"src": `${add}`, "height": "1.5rem", "width": "1.5rem", "alt": "add"},
+            {"id": "task-button"},
             {"class": "todo" },
             {"for" : "todo-name"},
             {"id": "todo-name", "type": "checkbox", "name": "todo-list"},
@@ -101,21 +105,22 @@ function embedHtmlElements(data){
         for(let index in element){
             DomHelper.setAttributes(element[index], attrList[index]);
         }
+        const button = element.splice(0,3);
         const text = ["", "", "", `${data[key].title}`, "", "", `${format(new Date(data[key]["Due date"]), "dd-MM-yyyy")}`];
         DomHelper.textEmbed(element, text);
+        DomHelper.appendChildren(button, 0);
         DomHelper.appendChildren(element, 0);
-        content.appendChild(element[0]);
-
+        content.append(button[0], element[0]);
         // element[4]
         editFunction(element[5]);
     }
 }
-function editFunction(event){
-    event.addEventListener("click", (eve)=>{
+function editFunction(element){
+    element.addEventListener("click", (event)=>{
         const container = document.querySelector(".task-container");
         container.style.display ="block";
         const button = document.querySelector("input[type='submit']");
-        button.setAttribute("data-key",`${eve.target.getAttribute('data-key')}`); //need to de    bug
+        button.setAttribute("data-key",`${event.target.getAttribute('data-key')}`); 
     })
 }
 
@@ -141,4 +146,4 @@ class DomHelper {
 
 //delete todo's from local storage on user's request
 
-export{embedElements, DomHelper};
+export{embedElements, DomHelper, editFunction};

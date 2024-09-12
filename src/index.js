@@ -1,5 +1,5 @@
 import {addToLocalStorage, fetchData, LocalStorage} from "./app-algorithm.js";
-import { embedElements, DomHelper} from "./embedel.js";
+import { embedElements, DomHelper, editFunction} from "./embedel.js";
 
 
 
@@ -9,15 +9,21 @@ import "./taskfield.css";
 const domController = (function(){
     const submitBtn = document.querySelector("input[type='submit']");
     const tabBtn = document.querySelectorAll("nav>ul:first-child>li");
-    
+    const addBtn = document.querySelector(".add-task-button");
     window.addEventListener("load", ()=>{
         tabBtn[0].click(); 
+        const keys = LocalStorage.getProjectKey();
+        const node = document.querySelector("nav");
+
+        keys.forEach((value)=>{
+            createProjectTab(node, value, false);
+        })
     })
     submitBtn.addEventListener("click", (event)=>{
         event.preventDefault();
         fetchData(submitBtn.getAttribute("data-key"));
         displayData(event.target.name);
-        submitBtn.parentNode.parentNode.parentNode.style = "display: none";
+        submitBtn.parentNode.parentNode.parentNode.parentNode.style = "display: none";
     })
     tabBtn.forEach((btn)=>{
         btn.addEventListener("click", (event)=>{
@@ -26,6 +32,7 @@ const domController = (function(){
             displayData(event.target.value);
         })
     })
+        editFunction(addBtn);
 })()
 
 // new project input
@@ -63,18 +70,21 @@ function addEvent(target, para){
             return;
         };
         const value = event.target.parentNode.querySelector("input[type='text']").value;
+        createProjectTab(event.target.parentNode.parentNode, value, event);
+    })
+}
+
+function createProjectTab(node, value, event){
 
         const newEle = ["div"];
         ChildElement.createElement(newEle);
         DomHelper.setAttributes(newEle[0], {"value": `${value}`, "name": "project", "class": "project-tab"});
-        const node  =event.target.parentNode.parentNode;
         let childNode = node.querySelector("project-tab:last-of-type, ul:nth-child(2)");
-        ChildElement.removeInput(event);
+        if(event) ChildElement.removeInput(event);
         childNode = Array.isArray(childNode)? childNode[0] : childNode ;
         DomHelper.textEmbed(newEle, [`# ${value}`]);
-        addToLocalStorage(value, []);
+        if(event) addToLocalStorage(value, []);
         ChildElement.insert(node, newEle[0], childNode.nextSibling);
-    })
 }
 
 //methods for child elements
