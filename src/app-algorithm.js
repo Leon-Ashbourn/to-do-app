@@ -124,7 +124,7 @@ class LocalStorage {
         let count = 0;
         while(localStorage.key(count)){
             const key = localStorage.key(count);
-            if(!(Number(key)) || Number(key) !== 0) keys.push(localStorage.key(count));
+            if(isNaN(Number(key)) && key) keys.push(localStorage.key(count));
             count ++;
         }
         return keys;

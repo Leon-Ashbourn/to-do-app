@@ -5,6 +5,7 @@
     --background-sidebar2: #6b7280;
     --background-li-hover: #cbd5e1;
     --background-button: #737373;
+    --background-project: #44403c;
 }
 
 /* header styling*/
@@ -111,6 +112,10 @@ button#project {
     margin: 2px;
     color: white;
     border-bottom: 2px solid white;
+    
+}
+.project-tab:hover {
+    background-color: var(--background-project) !important;
 }
 
 .project {

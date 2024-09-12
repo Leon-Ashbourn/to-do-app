@@ -25,16 +25,23 @@ const domController = (function(){
         displayData(event.target.name);
         submitBtn.parentNode.parentNode.parentNode.parentNode.style = "display: none";
     })
-    tabBtn.forEach((btn)=>{
-        btn.addEventListener("click", (event)=>{
+    tabEvent(tabBtn);
+    const project = document.querySelectorAll(".project-tab");
+    tabEvent(project);
+    editFunction(addBtn);
+})()
+
+//
+
+function tabEvent(node){
+    node.forEach((element)=>{
+        element.addEventListener("click", (event)=>{
             event.target.style = `background-color: ${ComputedStyles.getStyle(event.target, "background-color")}`;
             modifyTab(event.target);
             displayData(event.target.value);
         })
     })
-        editFunction(addBtn);
-})()
-
+}
 // new project input
 
 const newProject = (function(){
@@ -79,7 +86,7 @@ function createProjectTab(node, value, event){
         const newEle = ["div"];
         ChildElement.createElement(newEle);
         DomHelper.setAttributes(newEle[0], {"value": `${value}`, "name": "project", "class": "project-tab"});
-        let childNode = node.querySelector("project-tab:last-of-type, ul:nth-child(2)");
+        let childNode = node.querySelector(".project-tab:last-of-type, ul:nth-child(2)");
         if(event) ChildElement.removeInput(event);
         childNode = Array.isArray(childNode)? childNode[0] : childNode ;
         DomHelper.textEmbed(newEle, [`# ${value}`]);
@@ -110,7 +117,7 @@ class ChildElement{
 //modify the tab menu to it's usual background color
 
 function modifyTab(target){
-    const submitBtn = document.querySelectorAll("nav>ul>li");
+    const submitBtn = document.querySelectorAll("nav>ul>li, nav>div[name='project'] ");
     submitBtn.forEach((node)=>{
         if(node === target) return;
         node.style = `background-color: ${ComputedStyles.getStyle(node.parentNode,"background-color")}`;
