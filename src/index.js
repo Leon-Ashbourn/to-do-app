@@ -34,7 +34,16 @@ const domController = (function(){
     editFunction(addBtn);
 })()
 
-//
+//function to cross checked todo's
+// const checkedTodo = (function(){
+//     const checked = document.querySelector("input[type='checkbox']:checked");
+//     if(checked) return;
+//     const parentNode = checked.parentNode;
+//     parentNode.setAttribute("class", "todo checked");
+//     parentNode.style.backgroundColor = "red";
+// })()
+
+// addevent listeners to ech list item to navigate upon click
 
 function tabEvent(node){
     node.forEach((element)=>{
