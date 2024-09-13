@@ -22,12 +22,12 @@ const domController = (function(){
     submitBtn.addEventListener("click", (event)=>{
         event.preventDefault();
         fetchData(submitBtn.getAttribute("data-key"));
-        displayData(event.target.name);
+        displayData(event.target);
+        const addBtn = document.querySelector(".add-task-button");
+        DomHelper.setAttributes(addBtn, {"name": `${event.target.getAttribute("name")}`, "value": `${event.target.getAttribute("name")}`});
         submitBtn.parentNode.parentNode.parentNode.parentNode.style = "display: none";
     })
     tabEvent(tabBtn);
-    const project = document.querySelectorAll(".project-tab");
-    tabEvent(project);
     editFunction(addBtn);
 })()
 
@@ -38,7 +38,7 @@ function tabEvent(node){
         element.addEventListener("click", (event)=>{
             event.target.style = `background-color: ${ComputedStyles.getStyle(event.target, "background-color")}`;
             modifyTab(event.target);
-            displayData(event.target.value);
+            displayData(event.target);
         })
     })
 }
@@ -83,15 +83,15 @@ function addEvent(target, para){
 
 function createProjectTab(node, value, event){
 
-        const newEle = ["div"];
+        const newEle = ["li"];
         ChildElement.createElement(newEle);
         DomHelper.setAttributes(newEle[0], {"value": `${value}`, "name": "project", "class": "project-tab"});
-        let childNode = node.querySelector(".project-tab:last-of-type, ul:nth-child(2)");
+        let childNode = document.querySelector("#projects-navigation");
         if(event) ChildElement.removeInput(event);
-        childNode = Array.isArray(childNode)? childNode[0] : childNode ;
         DomHelper.textEmbed(newEle, [`# ${value}`]);
         if(event) addToLocalStorage(value, []);
-        ChildElement.insert(node, newEle[0], childNode.nextSibling);
+        childNode.appendChild(newEle[0]);
+        tabEvent(newEle);
 }
 
 //methods for child elements
@@ -167,8 +167,8 @@ function restoreInput(target){
 }
 
 
-function displayData(value){
-    embedElements(value);
+function displayData(target){
+    embedElements(target);
 }
 
 function deleteBtn(){

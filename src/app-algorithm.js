@@ -140,7 +140,7 @@ class LocalStorage {
 
 
 function fetchDataFromLocalStore(name){
-    if(name) return JSON.parse(localStorage.getItem(name));
+    if(isNaN(Number(name)) && name) return JSON.parse(localStorage.getItem(name));
     return storageIterator();
 }
 

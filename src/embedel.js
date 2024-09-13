@@ -4,55 +4,55 @@ import edit from "./icons/edit.png";
 import add from "./icons/add.png"
 import {format, formatDistance} from "date-fns";
 
-const embedElements = function(tabArea){
-    chooseContentToShow(tabArea); //call the function to check which todo list to show on the page
+const embedElements = function(target){
+    chooseContentToShow(target); //call the function to check which todo list to show on the page
 }
 
 
 //check user's current tab
 
-function chooseContentToShow(tab){
-    switch (tab){
-        case 1:
-            TabMenu.inboxData();
+function chooseContentToShow(target){
+    switch (target.getAttribute("value")){
+        case "1":
+            TabMenu.inboxData(target);
             break;
         
-        case 2 :
-            TabMenu.tomorrowData();
+        case "2":
+            TabMenu.tomorrowData(target);
             break;
         
-        case 3 :
-            TabMenu.upcomingData();
+        case "3" :
+            TabMenu.upcomingData(target);
             break;
 
         default :
-            TabMenu.projectData(tab);
+            TabMenu.projectData(target);
     }
 }
 //inbox tab
 class TabMenu {
-    static inboxData(){
-        HtmlRender.renderData('');
+    static inboxData(target){
+        HtmlRender.renderData(target);
     }
-    static tomorrowData(){
-        HtmlRender.filterData('', "1 day", false);
+    static tomorrowData(target){
+        HtmlRender.filterData('', "1 day", false, target);
     }
-    static upcomingData(){
-        HtmlRender.filterData('', "", true);
+    static upcomingData(target){
+        HtmlRender.filterData('', "", true, target);
     }
-    static projectData(name){
-        HtmlRender.filterData(name);
+    static projectData(target){
+        HtmlRender.renderData(target);
     }
 }
 
 
 class HtmlRender {
-    static filterData(name, condition, check){
+    static filterData(name, condition, check, target){
         const filteredData =  filterLocalStorage(this.#fetchData(name), condition, check);
-        embedHtmlElements(filteredData);
+        embedHtmlElements(filteredData, target);
     }
-    static renderData(name){
-        embedHtmlElements(this.#fetchData(name));
+    static renderData(target){
+        embedHtmlElements(this.#fetchData(target.getAttribute("value")), target);
     }
 
     static #fetchData(name){
@@ -78,12 +78,12 @@ function filterLocalStorage(data, check, check2){
 }
 
 
-function embedHtmlElements(data){
+function embedHtmlElements(data, target){
 
     const content = document.querySelector("#content");
-    const todoElements = ["div","img","button", "div", "label", "input", "p", "img", "img", "p"];
-    let check = true;
-    if(data) content.textContent = "" ;
+    const todoElements = ["div", "label", "input", "p", "img", "img", "p"];
+    content.textContent = "" ;
+    addButton(content, target.getAttribute("name"), target.getAttribute("value"));
     for(let key in data){
         const element = [];
         todoElements.forEach((value)=>{
@@ -92,9 +92,6 @@ function embedHtmlElements(data){
         })
     
         const attrList = [
-            {"class": "add-task-button", "name": "", "value": ""},
-            {"src": `${add}`, "alt": "add", "class": "icon"},
-            {"id": "task-button"},
             {"class": "todo" },
             {"for" : "todo-name"},
             {"id": "todo-name", "type": "checkbox", "name": "todo-list"},
@@ -106,27 +103,53 @@ function embedHtmlElements(data){
         for(let index in element){
             DomHelper.setAttributes(element[index], attrList[index]);
         }
-        const text = [, ,"Add", "", "", "", `${data[key].title}`, "", "", `${format(new Date(data[key]["Due date"]), "dd-MM-yyyy")}`];
+        const text = [ "", "", "", `${data[key].title}`, "", "", `${format(new Date(data[key]["Due date"]), "dd-MM-yyyy")}`];
         DomHelper.textEmbed(element, text);
-        const button = element.splice(0,3);
-        button[1].style = "height: 1.5rem, width: 1.5rem";
-        DomHelper.appendChildren(button, 0);
         DomHelper.appendChildren(element, 0);
-        if(check) content.appendChild(button[0]); editFunction(button[0]);
         content.appendChild(element[0]);
         // element[4]
         editFunction(element[5]);
-        check = false;
     }
 }
+
+// add buttton function for every tab 
+
+const addButton = function(node, name, value){
+    const elements = ["div","img","button"];
+    const attrList = [
+        {"class": "add-task-button", "name": `${name}`, "value": `${value}`},
+        {"src": `${add}`, "alt": "add", "class": "icon"},
+        {"id": "task-button"},
+    ];
+    const text = [ "","","Add"];
+    const button = [];
+    elements.forEach((value)=>{
+        const e = document.createElement(value);
+        button.push(e);
+    })
+    for(let index in button){
+        DomHelper.setAttributes(button[index], attrList[index]);
+    }
+    DomHelper.textEmbed(button, text);
+    button[1].style = "height: 1.5rem, width: 1.5rem";
+    DomHelper.appendChildren(button, 0);
+    node.appendChild(button[0]);
+    node.appendChild(button[0]);
+    editFunction(button[0]);
+}
+
+
 function editFunction(element){
     element.addEventListener("click", (event)=>{
         let dataKey = event.target.getAttribute("data-key");
         if(!dataKey) dataKey = LocalStorage.getKey("");
+        const target = event.currentTarget;
+        if( !Number(target.getAttribute("name")) && target.getAttribute("name") ) dataKey = JSON.parse(localStorage.getItem(target.getAttribute("value"))).length;
         const container = document.querySelector(".task-container");
         container.style.display ="block";
         const button = document.querySelector("input[type='submit']");
-        button.setAttribute("data-key",`${dataKey}`); 
+        button.setAttribute("data-key",`${dataKey}`);
+        button.setAttribute("name", `${target.getAttribute("value")}`) 
     })
 }
 
