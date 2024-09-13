@@ -21,11 +21,14 @@ const domController = (function(){
     })
     submitBtn.addEventListener("click", (event)=>{
         event.preventDefault();
-        fetchData(submitBtn.getAttribute("data-key"));
+        fetchData(submitBtn.getAttribute("data-key"), event.target);
         displayData(event.target);
         const addBtn = document.querySelector(".add-task-button");
         DomHelper.setAttributes(addBtn, {"name": `${event.target.getAttribute("name")}`, "value": `${event.target.getAttribute("name")}`});
         submitBtn.parentNode.parentNode.parentNode.parentNode.style = "display: none";
+        const tabChange = event.target.getAttribute("name");
+        const tab = document.querySelector(`li[value= \'${tabChange}\']`);
+        tab.click();
     })
     tabEvent(tabBtn);
     editFunction(addBtn);

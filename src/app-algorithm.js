@@ -2,8 +2,8 @@ import {format} from "date-fns";
 
 /*fetch data*/
 
-const fetchData = (function(dataKey){
-    createObject(dataKey);
+const fetchData = (function(dataKey, target){
+    createObject(dataKey, target);
 })
 
 //create todo object
@@ -24,10 +24,10 @@ const iterator= (function(){
     return {getTodo};
 })()
 
-function createObject(dataKey){
+function createObject(dataKey, target){
     const inputElements = document.querySelectorAll("input:not(input[type='button']), textarea:not(textarea[id='side-note']), input[checked='true']");
     const newProject = iterator.getTodo(inputElements);
-    AddObjectToArray.addToArray(newProject, dataKey);
+    AddObjectToArray.addToArray(newProject, dataKey, target);
 }
 
 
@@ -42,11 +42,11 @@ class AddObjectToArray {
         }
     }
 
-    static addToArray(todoObject, dataKey){
-        if(dataKey) {addToLocalStorage( dataKey , todoObject); return}
+    static addToArray(todoObject, dataKey, target){
+        const name = target.getAttribute("name");
         const miniVersion = AddObjectToArray.#object;
         miniVersion.push(todoObject);
-        addToLocalStorage( this.getKey(), todoObject);
+        addToLocalStorage( this.getKey(), todoObject, name);
     }
     static getKey(){    
         let tempKey = localStorage.key(0);
@@ -67,10 +67,9 @@ class AddObjectToArray {
 
 //add each object to the local storage
 
-function addToLocalStorage(key, value){
-    if(value.project) {
-        key = value.project;
-        checkStorageForProject(key, value);
+function addToLocalStorage(key, value, name){
+    if(!Number(name) && name) {
+        checkStorageForProject(name, value);
         return;
     };
     value = JSON.stringify(value);
